@@ -21,8 +21,8 @@ const totalSlides = slidesArray.length;
 function updateSlidePosition() {
 
   slidesArray.forEach((slide) => {
-slide.classList.remove('visible');
-slide.classList.add('hidden');
+    slide.classList.remove('visible');
+    slide.classList.add('hidden');
 
 
   });
@@ -63,10 +63,10 @@ function moveToPrevSlide() {
     if not, set the slidePosition to the current position minus one
   */
 
-    if (slidePosition === totalSlides - 1){
-      slidePosition = 0;
-    } else {
-        slidePosition -= 1;
+  if (slidePosition === totalSlides - 1){
+    slidePosition = 0;
+  } else {
+      slidePosition -= 1;
     }
   updateSlidePosition();
 }
