@@ -15,7 +15,7 @@ const slides = document.querySelectorAll('.carousel_item');
 // change that "NodeList" into a Javascript "array", to get access to "array methods"
 const slidesArray = Array.from(slides);
 
-// Figure out how many slides we have available
+// Figure out how many slides we have available`
 const totalSlides = slidesArray.length;
 
 function updateSlidePosition() {
