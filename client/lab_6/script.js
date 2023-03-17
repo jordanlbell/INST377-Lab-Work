@@ -20,31 +20,25 @@ async function mainEvent() { // the async keyword means we can make API requests
   const filterButton = document.querySelector('#filter_button');
   const loadDataButton = document.querySelector('#data_load');
   const generateListButton = document.querySelector('#generate');
-  // Add a querySelector that targets your filter button here
 
+  const loadAnimation = document.querySelector('#data_load_animation');
+  loadAnimation.style.display = 'none';
   let currentList = []; // this is "scoped" to the main event function
   
   /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
   loadDataButton.addEventListener('click', async (submitEvent) => { // async has to be declared on every function that needs to "await" something
   
-
-  
     
-    // This prevents your page from becoming a list of 1000 records from the county, even if your form still has an action set on it
-    submitEvent.preventDefault(); 
-    
-    // this is substituting for a "breakpoint" - it prints to the browser to tell us we successfully submitted the form
-    console.log('form submission'); 
+     
+    console.log('laoding data'); 
+    loadAnimation.style.display = 'inline-block';
 
-  
-
-    // Basic GET request - this replaces the form Action
     const results = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
 
-    // This changes the response from the GET into data we can use - an "object"
     currentList = await results.json();
+    loadAnimation.style.display = 'none';
     console.table(currentList); 
-    injectHTML(currentList);
+    
 
   });
 
@@ -92,14 +86,6 @@ function processRestaurants(list) {
 }
 
 async function mainEvent() {
-  /*
-    ## Main Event
-      Separating your main programming from your side functions will help you organize your thoughts
-      When you're not working in a heavily-commented "learning" file, this also is more legible
-      If you separate your work, when one piece is complete, you can save it and trust it
-  */
-
-  // the async keyword means we can make API requests
   const form = document.querySelector('.main_form'); // get your main form so you can do JS with it
   const submit = document.querySelector('button[type="submit"]'); // get a reference to your submit button
   submit.style.display = 'none'; // let your submit button disappear
