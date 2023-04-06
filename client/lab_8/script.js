@@ -39,8 +39,7 @@ function filterList(list, query) {
 }
 
 async function mainEvent() { // the async keyword means we can make API requests
-  const mainForm = document.querySelector('.main_form'); // This class name needs to be set on your form before you can listen for an event on it
-  const filterButton = document.querySelector('#filter_button');
+  const mainForm = document.querySelector('.main_form'); 
   const loadDataButton = document.querySelector('#data_load');
   const generateListButton = document.querySelector('#generate');
   const textField = document.querySelector('#resto')
@@ -49,7 +48,12 @@ async function mainEvent() { // the async keyword means we can make API requests
   loadAnimation.style.display = 'none';
   generateListButton.classList.add('hidden');
 
-  let storedList = [];
+  const storedData = localStorage.getItem('storedData');
+  const parsedData = JSON.parse(storedData);
+  if (parsedData.length > 0){
+    generateListButton.classList.remove('hidden');
+  }
+ 
   let currentList = []; // this is "scoped" to the main event function
 
   /* We need to listen to an "event" to have something happen in our page - here we're listening for a "submit" */
@@ -61,29 +65,20 @@ async function mainEvent() { // the async keyword means we can make API requests
 
     const results = await fetch('https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json');
 
-    storedList = await results.json();
+    const storedList = await results.json();
+    localStorage.setItem('storedData', JSON.stringify(storedList));
     if (storedList.length > 0) {
       generateListButton.classList.remove('hidden');
     }
     loadAnimation.style.display = 'none';
-    console.table(storedList);
+    // console.table(storedList);
 
 
   });
 
-  filterButton.addEventListener('click', (event) => {
-    console.log('clicked FilterButton')
-    const formData = new FormData(mainForm);
-    const formProps = Object.fromEntries(formData);
-    console.log(formProps);
-    const newList = filterList(currentList, formProps.resto);
-    console.log(newList);
-    injectHTML(newList);
-  })
-
   generateListButton.addEventListener('click', (event) => {
     console.log('generate new list')
-    currentList = processRestaurants(storedList);
+    currentList = processRestaurants(parsedData);
     console.log(currentList)
     injectHTML(currentList);
   })
